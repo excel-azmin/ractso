@@ -1,0 +1,110 @@
+{
+  // Automatically format code on save
+  "editor.formatOnSave": true,
+
+  // Enable bracket pair colorization
+  "editor.bracketPairColorization.enabled": true,
+
+  // Enable auto alignment for code blocks
+  "editor.formatOnType": true,
+
+  // Set the default formatter for different languages
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // Set tab size for code
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+
+  // Auto-close brackets and parentheses
+  "editor.autoClosingBrackets": "always",
+  "editor.autoClosingQuotes": "always",
+
+  // Show whitespace characters for alignment reference
+  "editor.renderWhitespace": "boundary",
+
+  // Enable error/warning on misalignment or issues
+  "editor.renderControlCharacters": true,
+
+  // Enable auto indentation after pasting
+  "editor.formatOnPaste": true,
+
+  // Enable linting with Prettier for consistent styling
+  "eslint.alwaysShowStatus": true,
+  "eslint.format.enable": true,
+
+  // For HTML, use a 2-space tab size
+  "[html]": {
+    "editor.tabSize": 2
+  },
+
+  // For TypeScript/JavaScript, use a 2-space tab size
+  "[javascript]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+
+  // For JSON files, use a 2-space tab size
+  "[json]": {
+    "editor.tabSize": 2
+  },
+
+  // For Markdown files, use a 2-space tab size
+  "[markdown]": {
+    "editor.tabSize": 2
+  },
+
+  // Enable the format-on-save for specific languages
+  "[typescriptreact]": {
+    "editor.formatOnSave": true
+  },
+  "[javascriptreact]": {
+    "editor.formatOnSave": true
+  },
+
+  // Prettier settings
+  "prettier.tabWidth": 2,
+  "prettier.useTabs": false,
+  "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
+  "prettier.printWidth": 80,
+  "prettier.semi": true,
+
+  // Git Integration
+  "git.autofetch": true,
+  "git.fetchOnWindowChange": true,
+
+  // File Save and Backup Options
+  "files.autoSave": "onWindowChange",
+  "files.autoSaveDelay": 1000,
+
+  // Suggestions & IntelliSense
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.wordBasedSuggestions": "matchingDocuments",
+  "editor.snippetSuggestions": "inline",
+
+  // Linting
+  "eslint.enable": true,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact"
+  ],
+
+  // File Size Limit for Better Performance
+  "files.maxMemoryForLargeFilesMB": 4096,
+
+  // Disable Quick Fix suggestions for improved performance
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": false
+  },
+
+  // ✅ Automatically remove unused imports on save
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  }
+}

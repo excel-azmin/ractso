@@ -1,0 +1,58 @@
+# Stage 1: Build the application
+FROM node:20-alpine AS builder
+
+# update timezone
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && \
+    echo "Asia/Dhaka" > /etc/timezone
+
+
+# Set working directory
+WORKDIR /app
+
+# install pnpm
+RUN npm install -g pnpm
+
+# Install dependencies
+COPY package.json pnpm-lock.yaml ./
+RUN pnpm install
+
+# Copy the rest of the application code
+COPY . .
+
+# install nest cli
+# RUN pnpm add -g @nestjs/cli
+
+# Build the NestJS app
+RUN pnpm build
+
+# Stage 2: Prepare production image
+FROM node:20-alpine AS runner
+
+# update timezone
+RUN apk add --no-cache tzdata && \
+    cp /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && \
+    echo "Asia/Dhaka" > /etc/timezone
+
+# Set working directory in production stage
+WORKDIR /app
+
+# Copy only the production dependencies from the builder stage
+COPY --from=builder /app/node_modules ./node_modules
+
+# Copy the built application files from the builder stage
+COPY --from=builder /app/dist ./dist
+
+# Copy the templates and uploads directories
+# COPY --from=builder /app/src/email/templates ./src/email/templates
+COPY --from=builder /app/uploads ./uploads
+
+
+# Expose the application port
+EXPOSE 3000
+
+# Set environment variable if necessary
+ENV NODE_ENV=production
+
+# Command to run the NestJS application
+CMD ["node", "dist/main.js"]
