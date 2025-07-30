@@ -51,6 +51,7 @@ export class AuthController {
   }
 
   @Post('refresh-token')
+  @UseGuards(RefreshTokenGuard)
   async refreshToken(@Body() refreshTokenDto: RefreshTokenDto) {
     return await this.commandBus.execute(
       new RefreshTokenCommand(refreshTokenDto),
