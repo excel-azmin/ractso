@@ -44,14 +44,16 @@ export class LoginHandler implements ICommandHandler<LoginCommand> {
     });
 
     return {
-      user: {
-        id: user.id,
-        email: user.email,
-        fullName: user.fullName,
-        roles: user.roles,
+      data: {
+        user: {
+          id: user.id,
+          email: user.email,
+          fullName: user.fullName,
+          roles: user.roles,
+        },
+        access_token,
+        refresh_token,
       },
-      access_token,
-      refresh_token,
     };
   }
 }

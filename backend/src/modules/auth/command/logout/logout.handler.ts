@@ -32,6 +32,10 @@ export class LogoutHandler implements ICommandHandler<LogoutCommand> {
     if (!user) {
       throw new Error('User not found');
     }
-    return { message: 'User logged out successfully' };
+    return {
+      data: {
+        message: 'User logged out successfully',
+      },
+    };
   }
 }

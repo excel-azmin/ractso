@@ -88,8 +88,10 @@ export class RefreshTokenHandler
     );
 
     return {
-      access_token,
-      refresh_token: newRefreshToken,
+      data: {
+        access_token,
+        refresh_token: newRefreshToken,
+      },
     };
   }
 }

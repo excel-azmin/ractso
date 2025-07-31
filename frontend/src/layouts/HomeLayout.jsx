@@ -1,10 +1,11 @@
 import Navbar from '../components/Navbar';
+import SignUp from '../pages/SignUp';
 
 function HomeLayout() {
   return (
     <div>
       <Navbar />
-      Home Layout
+      <SignUp />
     </div>
   );
 }

@@ -16,9 +16,11 @@ export class RegistrationHandler
   async execute(command: RegistrationCommand): Promise<any> {
     const { firstName, lastName, email, password } =
       command.registrationAuthDto;
-
-    const isExistingUser = await this.prismaService.user.findUnique({
-      where: { email },
+    const username = email.split('@')[0];
+    const isExistingUser = await this.prismaService.user.findFirst({
+      where: {
+        OR: [{ email }, { username }],
+      },
     });
 
     if (isExistingUser) {
@@ -48,11 +50,8 @@ export class RegistrationHandler
     }
 
     return {
-      user: {
-        id: user.id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
+      data: {
+        message: 'User registered successfully',
       },
     };
   }

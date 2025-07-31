@@ -1,4 +1,6 @@
 export default function Navbar() {
+
+
   return (
     <>
       <div className="navbar bg-base-100 shadow-sm">
@@ -7,7 +9,7 @@ export default function Navbar() {
         </div>
         <div className="flex gap-2 items-center justify-center">
           <div className="dropdown dropdown-end avatar">
-            <label className="swap swap-rotate ">
+            <label className="swap swap-rotate" >
               {/* this hidden checkbox controls the state */}
               <input
                 type="checkbox"
