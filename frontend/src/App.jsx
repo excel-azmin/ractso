@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
+import HomeLayout from './layouts/HomeLayout';
 
 function App() {
   return (
     <>
-      <Button>count is </Button>
+      <HomeLayout />
     </>
   );
 }
