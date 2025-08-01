@@ -12,4 +12,8 @@ export const store = configureStore({
     getDefaultMiddleware().concat(authApi.middleware),
 });
 
+store.subscribe(() => {
+  console.log('State after dispatch:', store.getState().auth);
+});
+
 export default store;

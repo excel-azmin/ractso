@@ -1,4 +1,5 @@
 import Navbar from '../components/Navbar';
+import Login from '../pages/SignIn';
 import SignUp from '../pages/SignUp';
 
 function HomeLayout() {
@@ -6,6 +7,7 @@ function HomeLayout() {
     <div>
       <Navbar />
       <SignUp />
+      <Login />
     </div>
   );
 }
