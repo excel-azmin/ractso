@@ -33,6 +33,14 @@ export const authApi = createApi({
       }),
       invalidatesTags: ['Auth'],
     }),
+    refreshToken: builder.mutation({
+      query: (refreshToken) => ({
+        url: '/auth/refresh',
+        method: 'POST',
+        body: { refreshToken: refreshToken },
+      }),
+      invalidatesTags: ['Auth'],
+    }),
     getMe: builder.query({
       query: () => '/auth/me',
       providesTags: ['Auth'],
@@ -50,6 +58,7 @@ export const authApi = createApi({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useRefreshTokenMutation,
   useGetMeQuery,
   useLogoutMutation,
 } = authApi;

@@ -1,24 +1,12 @@
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { setCredentials } from '../redux/features/authSlice';
 import { useLoginMutation } from '../services/authApi';
 
 export default function Login() {
   const [login] = useLoginMutation();
-  const [error, setError] = useState(null);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const loggedInUser = useSelector((state) => state.auth);
-
-  console.log('Logged in user RTK:', loggedInUser);
-
-  useEffect(() => {
-    console.log('Current auth state:', loggedInUser);
-    console.log('LocalStorage user:', localStorage.getItem('user'));
-    console.log(
-      'LocalStorage access_token:',
-      localStorage.getItem('access_token'),
-    );
-  }, [loggedInUser]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -28,23 +16,10 @@ export default function Login() {
 
     try {
       const result = await login(data).unwrap();
-      console.log('Login result:', result?.response?.data?.user);
-      console.log('Access Token:', result?.response?.data?.access_token);
-      console.log('Refresh Token:', result?.response?.data?.refresh_token);
-      if (result?.response?.data) {
-        dispatch(
-          setCredentials({
-            user: result.response.data.user,
-            access_token: result.response.data.access_token,
-            refresh_token: result.response.data.refresh_token,
-          }),
-        );
-      } else {
-        console.error('Unexpected API response structure:', result);
-        setError('Invalid server response');
-      }
+      dispatch(setCredentials(result.response.data));
+      navigate('/');
     } catch (err) {
-      setError(err.data?.message || 'Login failed');
+      alert('Login failed. Please check your credentials and try again.');
     }
   };
 

@@ -1,9 +1,9 @@
-import HomeLayout from './layouts/HomeLayout';
+import { Outlet } from 'react-router';
 
 function App() {
   return (
     <>
-      <HomeLayout />
+      <Outlet />
     </>
   );
 }
