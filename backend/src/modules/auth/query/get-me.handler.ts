@@ -8,6 +8,8 @@ export class GetMeHandler implements IQueryHandler<GetMeQuery> {
 
   async execute(query: GetMeQuery): Promise<any> {
     const { userId } = query;
-    return await this.userService.getUserById(userId);
+    return {
+      data: await this.userService.getUserById(userId),
+    };
   }
 }

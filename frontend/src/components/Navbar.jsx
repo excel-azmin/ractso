@@ -1,5 +1,22 @@
-export default function Navbar() {
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router';
+import { useLogoutMutation } from '../services/authApi';
 
+export default function Navbar() {
+  const [logout] = useLogoutMutation();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await logout().unwrap();
+      dispatch(logout());
+      navigate('/ ');
+    } catch (error) {
+      console.error('Logout failed:', error);
+      alert('Logout failed. Please try again.');
+    }
+  };
 
   return (
     <>
@@ -9,7 +26,7 @@ export default function Navbar() {
         </div>
         <div className="flex gap-2 items-center justify-center">
           <div className="dropdown dropdown-end avatar">
-            <label className="swap swap-rotate" >
+            <label className="swap swap-rotate">
               {/* this hidden checkbox controls the state */}
               <input
                 type="checkbox"
@@ -106,7 +123,7 @@ export default function Navbar() {
               <li>
                 <a>Settings</a>
               </li>
-              <li>
+              <li onClick={() => handleLogout()}>
                 <a>Logout</a>
               </li>
             </ul>

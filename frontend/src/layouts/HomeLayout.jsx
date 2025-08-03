@@ -7,16 +7,8 @@ import SignUp from '../pages/SignUp';
 function HomeLayout() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
 
-  console.log('HomeLayout user:', user);
-  console.log('HomeLayout isAuthenticated:', isAuthenticated);
-
   return (
     <div>
-      {user && (
-        <div className="welcome-message">
-          Welcome, {user.name || user.email}!
-        </div>
-      )}
       <Navbar />
       {!isAuthenticated && (
         <>

@@ -21,6 +21,9 @@ const authSlice = createSlice({
   reducers: {
     setCredentials: (state, action) => {
       const { user, access_token, refresh_token } = action.payload;
+      if (!action.payload.access_token || !action.payload.refresh_token) {
+        return;
+      }
 
       localStorage.setItem('user', JSON.stringify(user));
       localStorage.setItem('access_token', access_token);
@@ -32,14 +35,14 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
     },
     logout: (state) => {
-      localStorage.removeItem('user');
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-
       state.user = null;
       state.access_token = null;
       state.refresh_token = null;
       state.isAuthenticated = false;
+
+      localStorage.removeItem('user');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
     },
   },
 });

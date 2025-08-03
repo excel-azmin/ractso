@@ -8,11 +8,16 @@ export class CreatePostHandler implements ICommandHandler<CreatePostCommand> {
 
   async execute(command: CreatePostCommand): Promise<any> {
     const { createPostDto, files, userId } = command;
-    createPostDto.images = files.map((file) => file.path);
+    // Need files validation if files exist then it will process
+    if (files && files.length > 0) {
+      createPostDto.images = files.map((file) => file.path);
+    }
+
     createPostDto.authorId = userId;
+    const { files: _, ...postData } = createPostDto;
     const post = await this.prismaService.post.create({
       data: {
-        ...createPostDto,
+        ...postData,
       },
     });
     return post;
