@@ -30,6 +30,14 @@ export class AuthGuard implements CanActivate {
         'You are not logged in. Please log in to access this resource.',
       );
 
+    // is the user exists in the database
+    // const user = this.userService.getUserById(request.user.id);
+    // if (!user) {
+    //   throw new UnauthorizedException(
+    //     'User not found. Please log in to access this resource.',
+    //   );
+    // }
+
     // Return true if the user is authenticated
     return true;
   }
