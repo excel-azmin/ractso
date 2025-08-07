@@ -16,10 +16,11 @@ export default function Login() {
 
     try {
       const result = await login(data).unwrap();
-      dispatch(setCredentials(result.response.data));
+      console.log('Login successful:', result);
+      dispatch(setCredentials(result));
       navigate('/');
     } catch (err) {
-      alert('Login failed. Please check your credentials and try again.');
+      alert(err);
     }
   };
 

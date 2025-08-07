@@ -1,20 +1,21 @@
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { logout } from '../redux/features/authSlice';
 import { useLogoutMutation } from '../services/authApi';
 
 export default function Navbar() {
-  const [logout] = useLogoutMutation();
+  const [logoutMutation] = useLogoutMutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
     try {
-      await logout().unwrap();
+      await logoutMutation().unwrap();
       dispatch(logout());
-      navigate('/ ');
+      navigate('/');
     } catch (error) {
       console.error('Logout failed:', error);
-      alert('Logout failed. Please try again.');
+      alert(error.message);
     }
   };
 

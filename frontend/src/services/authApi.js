@@ -1,72 +1,10 @@
 // src/services/authApi.js
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import { Mutex } from 'async-mutex';
-import { logout, setCredentials } from '../redux/features/authSlice';
-
-const baseUrl = import.meta.env.VITE_API_URL;
-const mutex = new Mutex();
-
-const baseQuery = fetchBaseQuery({
-  baseUrl,
-  prepareHeaders: (headers, { getState }) => {
-    const token = getState().auth.access_token;
-    if (token) {
-      headers.set('Authorization', `Bearer ${token}`);
-    }
-    return headers;
-  },
-});
-
-const customBaseQuery = async (args, api, extraOptions) => {
-  await mutex.waitForUnlock();
-  let result = await baseQuery(args, api, extraOptions);
-
-  if (result?.error?.status === 401) {
-    if (!mutex.isLocked()) {
-      const release = await mutex.acquire();
-
-      try {
-        const refreshToken = api.getState().auth.refresh_token;
-        if (refreshToken) {
-          const refreshResult = await baseQuery(
-            {
-              url: '/auth/refresh-token',
-              method: 'POST',
-              body: { refreshToken },
-            },
-            api,
-            extraOptions,
-          );
-
-          if (refreshResult?.data) {
-            api.dispatch(
-              setCredentials({
-                access_token: refreshResult.data.response.data.access_token,
-                refresh_token: refreshResult.data.response.data.refresh_token,
-              }),
-            );
-            result = await baseQuery(args, api, extraOptions);
-          } else {
-            api.dispatch(logout());
-          }
-        } else {
-          api.dispatch(logout());
-        }
-      } finally {
-        release();
-      }
-    } else {
-      await mutex.waitForUnlock();
-      result = await baseQuery(args, api, extraOptions);
-    }
-  }
-
-  return result;
-};
+import { createApi } from '@reduxjs/toolkit/query/react';
+import { baseQueryWithReauth } from '../redux/api';
 
 export const authApi = createApi({
   reducerPath: 'authApi',
-  baseQuery: customBaseQuery,
+  baseQuery: baseQueryWithReauth,
   tagTypes: ['Auth'],
   endpoints: (builder) => ({
     register: builder.mutation({
@@ -83,19 +21,23 @@ export const authApi = createApi({
         method: 'POST',
         body: credentials,
       }),
+      transformResponse: (response) => response.response.data,
       invalidatesTags: ['Auth'],
     }),
     refreshToken: builder.mutation({
       query: (refreshToken) => ({
-        url: '/auth/refresh',
+        url: '/auth/refresh-token',
         method: 'POST',
-        body: { refreshToken: refreshToken },
+        body: { refreshToken },
       }),
+      transformResponse: (response) => response.response.data,
       invalidatesTags: ['Auth'],
     }),
     getMe: builder.query({
-      query: () => '/auth/me',
-      method: 'GET',
+      query: () => ({
+        url: '/auth/me',
+        method: 'GET',
+      }),
       providesTags: ['Auth'],
     }),
     logout: builder.mutation({
