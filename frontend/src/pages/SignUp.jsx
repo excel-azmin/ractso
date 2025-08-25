@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useRegisterMutation } from '../services/authApi';
 
 export default function SignUp() {
@@ -59,6 +59,15 @@ export default function SignUp() {
             <button className="btn btn-neutral mt-4">Sign Up</button>
           </fieldset>
         </form>
+        {error && <p className="text-red-500">{error}</p>}
+        <div>
+          <p className="text-sm">
+            Already have an account?{' '}
+            <Link to="login" className="text-blue-500 underline">
+              Sign In
+            </Link>
+          </p>
+        </div>
       </div>
     </>
   );

@@ -2,6 +2,9 @@ import { createBrowserRouter } from 'react-router';
 import AdminLayout from '../layouts/AdminLayout';
 import HomeLayout from '../layouts/HomeLayout';
 import UserLayout from '../layouts/UserLayout';
+import Payment from '../pages/Payment';
+import Login from '../pages/SignIn';
+import SignUp from '../pages/SignUp';
 
 const router = createBrowserRouter([
   // for all user & if the role is user
@@ -9,6 +12,21 @@ const router = createBrowserRouter([
   {
     path: '/',
     element: <HomeLayout />,
+    children: [
+      {
+        path: 'signup',
+        element: <SignUp />,
+      },
+      {
+        path: 'login',
+        element: <Login />,
+      },
+    ],
+  },
+
+  {
+    path: '/payment',
+    element: <Payment />,
   },
 
   // for logged in user

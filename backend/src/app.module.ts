@@ -10,6 +10,7 @@ import { PrismaModule } from './common/shared/prisma/prisma.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { PostModule } from './modules/post/post.module';
 import { UserModule } from './modules/user/user.module';
+import { PaymentsModule } from './modules/payments/payments.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { UserModule } from './modules/user/user.module';
     PrismaModule,
     RedisCacheModule,
     PostModule,
+    PaymentsModule,
   ],
   controllers: [AppController],
   providers: [

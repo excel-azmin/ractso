@@ -47,6 +47,15 @@ export default function Login() {
           <button className="btn btn-neutral mt-4">Login</button>
         </fieldset>
       </form>
+
+      <div>
+        <p className="text-sm">
+          Need an account?{' '}
+          <button className="btn btn-link" onClick={() => navigate('/signup')}>
+            Sign up
+          </button>
+        </p>
+      </div>
     </div>
   );
 }
