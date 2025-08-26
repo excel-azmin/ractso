@@ -29,10 +29,17 @@ async function bootstrap() {
   });
   SwaggerModule.setup('api-docs', app, document);
 
+  // app.enableCors({
+  //   origin: '*',
+  //   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+  //   allowedHeaders: 'Content-Type, Accept, Authorization',
+  //   credentials: true,
+  // });
   app.enableCors({
     origin: '*',
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: 'Content-Type, Accept, Authorization',
+    methods: '*',
+    allowedHeaders: '*',
+    credentials: true,
   });
   // global interceptors
   app.useGlobalInterceptors(new ResponseInterceptor());

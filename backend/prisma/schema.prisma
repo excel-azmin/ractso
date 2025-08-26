@@ -47,6 +47,8 @@ model User {
 
   notifications Notification[] @relation("userNotifications") // notifications received by a user
   notificationsCreated Notification[] @relation("creatorNotifications") // notifications created by a user
+
+  Payments Payments[]
 }
 
 enum UserRole {
@@ -59,6 +61,27 @@ enum UserStatus {
   ACTIVE
   INACTIVE
   BANNED
+}
+
+enum PaymentStatus {
+  PENDING
+  COMPLETED
+  FAILED
+  CANCELLED
+}
+
+model Payments {
+  id        String   @id @default(cuid())
+  userId    String
+  amount    Float
+  tran_id   String @unique
+  paymentType String?
+  status    PaymentStatus
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relationships
+  user      User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Post {

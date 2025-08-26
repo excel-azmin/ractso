@@ -15,3 +15,14 @@ export const USER_SAFE_FIELDS = new Set([
   'createdAt',
   'updatedAt',
 ]);
+
+export const PAYMENTS_SAFE_FIELDS = new Set([
+  'id',
+  'userId',
+  'amount',
+  'tran_id',
+  'paymentType',
+  'status',
+  'createdAt',
+  'updatedAt',
+]);

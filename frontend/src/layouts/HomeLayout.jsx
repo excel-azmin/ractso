@@ -6,11 +6,6 @@ function HomeLayout() {
   const { isAuthenticated, user } = useSelector((state) => state.auth);
   const location = useLocation();
 
-  const handlePayNow = () => {
-    // Implement payment logic here
-    alert('Payment functionality is not implemented yet.');
-  };
-
   return (
     <div>
       <Navbar />
