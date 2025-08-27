@@ -1,16 +1,15 @@
 # Stage 1: Build the application
 FROM node:20-alpine AS builder
 
-# update timezone
+# Update timezone
 RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && \
     echo "Asia/Dhaka" > /etc/timezone
 
-
 # Set working directory
 WORKDIR /app
 
-# install pnpm
+# Install pnpm
 RUN npm install -g pnpm
 
 # Install dependencies
@@ -20,19 +19,22 @@ RUN pnpm install
 # Copy the rest of the application code
 COPY . .
 
-# install nest cli
-# RUN pnpm add -g @nestjs/cli
-
 # Build the NestJS app
 RUN pnpm build
+
+# Generate Prisma client at build time
+RUN pnpm prisma generate
 
 # Stage 2: Prepare production image
 FROM node:20-alpine AS runner
 
-# update timezone
+# Update timezone
 RUN apk add --no-cache tzdata && \
     cp /usr/share/zoneinfo/Asia/Dhaka /etc/localtime && \
     echo "Asia/Dhaka" > /etc/timezone
+
+# Install dependencies needed for Prisma and networking tools
+RUN apk add --no-cache openssl netcat-openbsd
 
 # Set working directory in production stage
 WORKDIR /app
@@ -43,16 +45,22 @@ COPY --from=builder /app/node_modules ./node_modules
 # Copy the built application files from the builder stage
 COPY --from=builder /app/dist ./dist
 
-# Copy the templates and uploads directories
-# COPY --from=builder /app/src/email/templates ./src/email/templates
+# Copy Prisma schema and generated client
+COPY --from=builder /app/prisma ./prisma
+COPY --from=builder /app/node_modules/.prisma ./node_modules/.prisma
+
+# Copy the uploads directory
 COPY --from=builder /app/uploads ./uploads
 
+# Copy entrypoint script
+COPY docker-entrypoint.sh ./
+RUN chmod +x docker-entrypoint.sh
 
 # Expose the application port
 EXPOSE 3000
 
-# Set environment variable if necessary
-ENV NODE_ENV=production
+# Use entrypoint script
+ENTRYPOINT ["./docker-entrypoint.sh"]
 
 # Command to run the NestJS application
 CMD ["node", "dist/main.js"]

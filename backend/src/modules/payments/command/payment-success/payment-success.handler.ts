@@ -1,12 +1,17 @@
 import { PrismaService } from '@/common/shared/prisma/prisma.service';
-import { CommandHandler, ICommandHandler } from '@nestjs/cqrs';
+import { CommandHandler, EventBus, ICommandHandler } from '@nestjs/cqrs';
+
+import { PaymentSuccessEvent } from '../../events/payment-succss/payment-success.event';
 import { PaymentSuccessStatusCommand } from './payment-success.command';
 
 @CommandHandler(PaymentSuccessStatusCommand)
 export class PaymentSuccessStatusHandler
   implements ICommandHandler<PaymentSuccessStatusCommand>
 {
-  constructor(private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly prismaService: PrismaService,
+    private readonly eventBus: EventBus,
+  ) {}
   async execute(command: PaymentSuccessStatusCommand) {
     const { paymentInfo } = command;
     // Implement the logic to handle payment success status
@@ -31,6 +36,8 @@ export class PaymentSuccessStatusHandler
     console.log('Transaction result: ', paymentInfo.tran_id);
     console.log('Info', paymentInfo);
     console.log('Payment status updated successfully', result);
+
+    this.eventBus.publish(new PaymentSuccessEvent(result));
 
     return {
       message: 'Payment status updated successfully',
