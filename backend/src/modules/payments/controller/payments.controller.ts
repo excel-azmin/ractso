@@ -5,6 +5,9 @@ import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { BasePaginationDto } from '@/common/shared/base-classes/base.pagination';
 import { Response } from 'express';
 import { InitPaymentCommand } from '../command/init-payment/init-payment.command';
+import { PaymentCancelStatusCommand } from '../command/payment-cancel/payment-cancel.command';
+import { PaymentFailStatusCommand } from '../command/payment-fail/payment-fail.command';
+import { PaymentIpnStatusCommand } from '../command/payment-ipn/payment-ipn.command';
 import { PaymentSuccessStatusCommand } from '../command/payment-success/payment-success.command';
 import { GetMyPaymentsQuery } from '../query/get-my-payments/get-my-payments.query';
 
@@ -35,6 +38,51 @@ export class PaymentsController {
         : res.status(404).send('Not Found');
     } catch (error) {
       console.error('Error processing payment success:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
+  @Post('fail')
+  async paymentFail(@Body() paymentInfo, @Res() res: Response) {
+    try {
+      const result = await this.commandBus.execute(
+        new PaymentFailStatusCommand(paymentInfo),
+      );
+      result
+        ? res.redirect(result.redirectTo)
+        : res.status(404).send('Not Found');
+    } catch (error) {
+      console.error('Error processing payment fail:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
+  @Post('cancel')
+  async paymentCancel(@Body() paymentInfo, @Res() res: Response) {
+    try {
+      const result = await this.commandBus.execute(
+        new PaymentCancelStatusCommand(paymentInfo),
+      );
+      result
+        ? res.redirect(result.redirectTo)
+        : res.status(404).send('Not Found');
+    } catch (error) {
+      console.error('Error processing payment cancel:', error);
+      res.status(500).send('Internal Server Error');
+    }
+  }
+
+  @Post('ipn')
+  async paymentIpn(@Body() paymentInfo, @Res() res: Response) {
+    try {
+      const result = await this.commandBus.execute(
+        new PaymentIpnStatusCommand(paymentInfo),
+      );
+      result
+        ? res.redirect(result.redirectTo)
+        : res.status(404).send('Not Found');
+    } catch (error) {
+      console.error('Error processing payment IPN:', error);
       res.status(500).send('Internal Server Error');
     }
   }

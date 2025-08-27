@@ -39,6 +39,22 @@ export default function Profile() {
             <p>Roles: {roles?.join(', ') || 'No roles assigned'}</p>
           </div>
         </div>
+        <div>
+          {/* Redirect to Home page */}
+          <button
+            className="btn btn-primary"
+            onClick={() => (window.location.href = '/')}
+          >
+            Go to Home
+          </button>
+          {/* Redirect to payment page */}
+          <button
+            className="btn btn-secondary"
+            onClick={() => (window.location.href = '/payment')}
+          >
+            Go to Payments
+          </button>
+        </div>
       </div>
 
       <div className="bg-white rounded-lg shadow-md p-6">

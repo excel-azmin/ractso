@@ -1,9 +1,13 @@
 import { Module } from '@nestjs/common';
 import { CqrsModule } from '@nestjs/cqrs';
 import { InitPaymentHandler } from './command/init-payment/init-payment.handler';
+import { PaymentCancelStatusHandler } from './command/payment-cancel/payment-cancel.handler';
+import { PaymentFailStatusHandler } from './command/payment-fail/payment-fail.handler';
+import { PaymentIpnStatusHandler } from './command/payment-ipn/payment-ipn.handler';
 import { PaymentSuccessStatusHandler } from './command/payment-success/payment-success.handler';
 import { PaymentsController } from './controller/payments.controller';
 import { GetMyPaymentsHandler } from './query/get-my-payments/get-my-payments.handler';
+import { PaymentSagas } from './sagas/payment.saga';
 import { PaymentsService } from './service/payments.service';
 
 @Module({
@@ -13,7 +17,12 @@ import { PaymentsService } from './service/payments.service';
     PaymentsService,
     InitPaymentHandler,
     PaymentSuccessStatusHandler,
+    PaymentFailStatusHandler,
+    PaymentCancelStatusHandler,
+    PaymentIpnStatusHandler,
     GetMyPaymentsHandler,
+    PaymentIpnStatusHandler,
+    PaymentSagas,
   ],
 })
 export class PaymentsModule {}
