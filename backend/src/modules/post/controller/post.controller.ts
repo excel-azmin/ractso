@@ -7,6 +7,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -36,6 +38,7 @@ export class PostController {
   ) {}
 
   @Post('create')
+  @HttpCode(HttpStatus.ACCEPTED)
   @ApiBearerAuth()
   @UseGuards(AuthGuard)
   @UploadPostImages()

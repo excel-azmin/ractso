@@ -20,6 +20,13 @@ export const REDIS_HOST = 'REDIS_HOST';
 export const REDIS_PORT = 'REDIS_PORT';
 export const CLERK_PUBLISHABLE_KEY = 'CLERK_PUBLISHABLE_KEY';
 export const CLERK_SECRET_KEY = 'CLERK_SECRET_KEY';
+export const MAIL_HOST = 'MAIL_HOST';
+export const MAIL_PORT = 'MAIL_PORT';
+export const MAIL_SECURE = 'MAIL_SECURE';
+export const MAIL_IGNORE_TLS = 'MAIL_IGNORE_TLS';
+export const MAIL_USER = 'MAIL_USER';
+export const MAIL_PASSWORD = 'MAIL_PASS';
+export const MAIL_SENDER_NAME = 'MAIL_SENDER_NAME';
 
 @Injectable()
 export class EnvConfigService {
@@ -54,6 +61,13 @@ export class EnvConfigService {
       REDIS_PORT: Joi.number().required(),
       CLERK_PUBLISHABLE_KEY: Joi.string().required(),
       CLERK_SECRET_KEY: Joi.string().required(),
+      MAIL_HOST: Joi.string().required(),
+      MAIL_PORT: Joi.number().required(),
+      MAIL_SECURE: Joi.boolean().default(true),
+      MAIL_IGNORE_TLS: Joi.boolean().default(false),
+      MAIL_USER: Joi.string().required(),
+      MAIL_PASSWORD: Joi.string().required(),
+      MAIL_SENDER_NAME: Joi.string().required(),
     });
 
     const { error, value: validatedEnvConfig } =

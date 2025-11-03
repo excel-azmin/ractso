@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notification</title>
+    <style>
+        body {
+            
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo { 
+            max-width: 80px; 
+            margin-bottom: 20px; 
+            display: block; 
+            margin-left: auto; 
+            margin-right: auto; 
+            }
+        .header {
+            background-color: #007bff;
+            color: #ffffff;
+            text-align: center;
+            padding: 15px;
+            font-size: 20px;
+            border-radius: 8px 8px 0 0;
+        }
+        .content {
+            padding: 20px;
+            font-size: 16px;
+            color: #333;
+            text-align: left;
+        }
+        .footer { margin-top: 20px; padding: 20px; text-align: left; font-size: 14px; color: #555; }
+        .footer p { margin-top: 5px; text-align: left; font-size: 13px; font-style: italic; color: #888;}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ArcOne Logo -->
+        <img src="https://res.cloudinary.com/dydfwvvro/image/upload/fl_preserve_transparency/v1746507037/arc-cc_mrkifp.jpg" alt="ArcOne" class="logo">
+
+        {{!-- <div class="header">Notification Update</div> --}}
+        <div class="content">
+            <p>Dear {{ fullName }},</p>
+            <p>{{ message }}</p>
+            <p>For more details, please check your ArcOne App.</p>
+        </div>
+        <div class="footer">
+            Best regards,<br>
+            ArcOne Team
+            <p>This is a system generated email. Please do not reply, as responses to this email are not monitored.</p>
+        </div>
+    </div>
+</body>
+</html>

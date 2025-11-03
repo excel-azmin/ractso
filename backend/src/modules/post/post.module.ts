@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-
+import { BullModule } from '@nestjs/bull';
 import { CqrsModule } from '@nestjs/cqrs';
 import { CreatePostHandler } from './command/create/create-post.handler';
 import { UpdatePostCommand } from './command/update/update-post.command';
@@ -12,9 +12,15 @@ import { GetPostListQuery } from './query/post-list/post-list.query';
 import { GetSinglePostHandler } from './query/single-post/single-post.handler';
 import { GetSinglePostQuery } from './query/single-post/single-post.query';
 import { PostService } from './service/post.service';
+import { PostCreationProcessor } from './queue/post-creation.processor';
 
 @Module({
-  imports: [CqrsModule],
+  imports: [
+    CqrsModule,
+    BullModule.registerQueue({
+      name: 'post-creation',
+    }),
+  ],
   controllers: [PostController],
   providers: [
     PostService,
@@ -27,6 +33,7 @@ import { PostService } from './service/post.service';
     GetPostListHandler,
     UpdatePostCommand,
     UpdatePostHandler,
+    PostCreationProcessor,
   ],
   exports: [PostService],
 })

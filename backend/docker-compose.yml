@@ -17,36 +17,81 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+    command:
+      - 'postgres'
+      - '-c'
+      - 'max_connections=200'
+      - '-c'
+      - 'shared_buffers=256MB'
+      - '-c'
+      - 'effective_cache_size=1GB'
+      - '-c'
+      - 'maintenance_work_mem=64MB'
+      - '-c'
+      - 'checkpoint_completion_target=0.9'
+      - '-c'
+      - 'wal_buffers=16MB'
+      - '-c'
+      - 'default_statistics_target=100'
+      - '-c'
+      - 'random_page_cost=1.1'
+      - '-c'
+      - 'effective_io_concurrency=200'
+      - '-c'
+      - 'work_mem=2621kB'
+      - '-c'
+      - 'min_wal_size=1GB'
+      - '-c'
+      - 'max_wal_size=4GB'
 
-  migration:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    env_file:
-      - .env
-    command: ['npx', 'prisma', 'migrate', 'deploy']
+  pgbouncer:
+    image: edoburu/pgbouncer:latest
+    container_name: pgbouncer
+    restart: always
+    ports:
+      - '6432:5432'
+    environment:
+      DATABASE_URL: 'postgres://user-name:strong-password@db:5432/mydb'
+      POOL_MODE: transaction
+      MAX_CLIENT_CONN: 1000
+      DEFAULT_POOL_SIZE: 25
+      MIN_POOL_SIZE: 10
+      RESERVE_POOL_SIZE: 5
+      MAX_DB_CONNECTIONS: 50
+      MAX_USER_CONNECTIONS: 50
     depends_on:
       db:
         condition: service_healthy
-    # Remove after completion
-    restart: 'no'
 
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: nestjs-app
-    env_file:
-      - .env
-    ports:
-      - '3001:3000'
-    restart: always
-    depends_on:
-      - db
-      - migration
-    environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=5432
+  # migration:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   env_file:
+  #     - .env
+  #   command: ['npx', 'prisma', 'migrate', 'deploy']
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+  #   # Remove after completion
+  #   restart: 'no'
+
+  # backend:
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   container_name: nestjs-app
+  #   env_file:
+  #     - .env
+  #   ports:
+  #     - '3001:3000'
+  #   restart: always
+  #   depends_on:
+  #     - db
+  #     - migration
+  #   environment:
+  #     - DATABASE_HOST=db
+  #     - DATABASE_PORT=5432
 
   redis:
     image: redis:7-alpine
@@ -57,19 +102,19 @@ services:
       - redis-data:/data
     restart: always
 
-  pgadmin:
-    image: dpage/pgadmin4
-    container_name: pgadmin4_container
-    restart: always
-    ports:
-      - '8888:80'
-    environment:
-      PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
-      PGADMIN_DEFAULT_PASSWORD: strong-password
-    volumes:
-      - pgadmin-data:/var/lib/pgadmin
-    depends_on:
-      - db
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   container_name: pgadmin4_container
+  #   restart: always
+  #   ports:
+  #     - '8888:80'
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: user-name@domain-name.com
+  #     PGADMIN_DEFAULT_PASSWORD: strong-password
+  #   volumes:
+  #     - pgadmin-data:/var/lib/pgadmin
+  #   depends_on:
+  #     - db
 
 volumes:
   local_pgdata:

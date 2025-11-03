@@ -86,7 +86,7 @@ model Payments {
 
 model Post {
   id        String   @id @default(cuid())
-  authorId  String  
+  authorId  String
   content   String?
   images    String[]
   createdAt DateTime @default(now())
@@ -96,8 +96,12 @@ model Post {
   author    User @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments  Comment[] // One to many relationship with comments
   likes     Like[] // One to many relationship with likes
-  notifications Notification[] 
-  
+  notifications Notification[]
+
+  // Indexes for high-performance queries
+  @@index([authorId])
+  @@index([createdAt])
+  @@index([authorId, createdAt])
 }
 
 model Comment {

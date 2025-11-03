@@ -1,20 +1,35 @@
 DATABASE_URL=postgresql://user-name:strong-password@localhost:5432/monorepo_db?schema=public
+# For production, use PgBouncer: postgresql://user-name:strong-password@localhost:6432/monorepo_db?schema=public
 
 JWT_ALGORITHM=HS256
 JWT_SECRET=secret
-JWT_EXPIRES_IN=1d
+JWT_EXPIRES_IN=5h
 
 LOGIN_SECRET=login-secret
-LOGIN_EXPIRES_IN=1h
+LOGIN_EXPIRES_IN=5h
 
 REFRESH_SECRET=refresh-secret
 REFRESH_EXPIRES_IN=7d
 
 WEBHOOK_SECRET=webhook-secret
 
-
+# Redis Configuration (used for caching and job queue)
 REDIS_HOST=localhost
 REDIS_PORT=6379
+REDIS_PASSWORD=
+
+# Rate Limiting Configuration
+THROTTLE_TTL=60000
+THROTTLE_LIMIT=100
 
 CLERK_PUBLISHABLE_KEY=pk_test_ZWxlZ2FudC1tb25rZXktNjguY2xlcmsuYWNjb3VudHMuZGV2JA
 CLERK_SECRET_KEY=sk_test_tOPc7DmaL8KWbewxAZJ9QzrOkGmu0j3EeCdiQuGtdd
+
+
+MAIL_HOST=smtp.zoho.com
+MAIL_PORT=465
+MAIL_SECURE=true
+MAIL_IGNORE_TLS=true
+MAIL_USER=notifications@excelbd.com
+MAIL_PASSWORD="ETL&aliV$P@783"
+MAIL_SENDER_NAME='ArcOne'
