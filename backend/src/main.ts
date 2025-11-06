@@ -45,7 +45,7 @@ async function bootstrap() {
   app.useGlobalInterceptors(new ResponseInterceptor());
 
   await app.startAllMicroservices();
-  await app.listen(3001);
+  await app.listen(3002);
 
   if (module.hot) {
     module.hot.accept();
