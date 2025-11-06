@@ -20,7 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prebuild": "prisma generate",
     "predev": "prisma generate && nest build -b swc",
-    "prisma:reset": "rm -rf ./node_modules/.prisma && prisma generate"
+    "prisma:reset": "rm -rf ./node_modules/.prisma && prisma generate",
+    "seed:meaningful": "ts-node -r tsconfig-paths/register scripts/seed-meaningful-data.ts"
   },
   "dependencies": {
     "@clerk/backend": "^2.5.2",
